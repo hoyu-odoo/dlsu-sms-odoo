@@ -1,0 +1,6 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <!-- This Menu Item Must have a parent -->
+    <menuitem id="school_menu_sms" name="SMS Records" parent="dlsu_school.school_menu_root" sequence="0"/>
+    
+</odoo>

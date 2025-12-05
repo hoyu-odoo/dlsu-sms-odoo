@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Create search for sms.student -->
+    <record id="sms_student_search" model="ir.ui.view">
+        <field name="name">SMS Student Search</field>
+        <field name="model">sms.student</field>
+        <field name="arch" type="xml">
+            <search string="SMS student Search">
+                <field name="stud_id"/>
+                <field name="lname"/>
+                <field name="fname"/>
+                <field name="mname"/>
+                <field name="suffix"/>
+                <field name="gender"/>
+                <field name="date_created"/>
+                <field name="date_modified"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- Create Tree View for sms.student -->
+    <record id="sms_student_tree" model="ir.ui.view">
+        <field name="name">SMS Student Tree</field>
+        <field name="model">sms.student</field>
+        <field name="arch" type="xml">
+            <tree string="SMS Applicant Tree">
+                <field name="stud_id"/>
+                <field name="lname"/>
+                <field name="fname"/>
+                <field name="mname"/>
+                <field name="suffix"/>
+                <field name="gender"/>
+                <field name="date_created"/>
+                <field name="date_modified"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Create Form View for sms.student -->
+    <record id="sms_student_form" model="ir.ui.view">
+        <field name="name">SMS Student Form</field>
+        <field name="model">sms.student</field>
+        <field name="arch" type="xml">
+            <form string="SMS Student Form">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="lname"/>
+                            <field name="fname"/>
+                            <field name="mname"/>
+                            <field name="suffix"/>
+                        </group>
+                        <group>
+                            <field name="stud_id"/>
+                            <field name="gender"/>
+                            <field name="date_created"/>
+                            <field name="date_modified"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Create Action for sms.student -->
+    <record model="ir.actions.act_window" id="sms_student_action">
+        <field name="name">SMS Student</field>
+        <field name="res_model">sms.student</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- Create Menu for sms.student -->
+    <menuitem id="sms_student_menu" name="Student" parent="school_menu_sms" sequence="3" action="sms_student_action"/>
+
+    
+
+</odoo>
