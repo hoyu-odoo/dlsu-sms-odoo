@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="dlsu_sync_logs_tree" model="ir.ui.view">
+            <field name="name">Sync Logs Tree</field>
+            <field name="model">dlsu.sync.logs</field>
+            <field name="arch" type="xml">
+                <tree string="Sync Logs Tree">
+                    <field name="name"/>
+                    <field name="invoice_type"/>
+                    <field name="partner_name"/>
+                    <field name="customer_id"/>
+                    <field name="invoice_id"/>
+                     <field name="invoice_name"/>
+                    <field name="invoice_amount"/>
+                    <field name="is_sms"/>
+                    <field name="status"/>
+                    <button name="action_sync_log" type="object" string="Generate Invoice" class="btn-primary" attrs="{'invisible': [('status','=','sync') ]}"/>
+                    <field name="active" widget="boolean_toggle"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="dlsu_sync_logs_search" model="ir.ui.view">
+            <field name="name">dlsu.sync.logs.search</field>
+            <field name="model">dlsu.sync.logs</field>
+            <field name="arch" type="xml">
+                <search string="Sync Logs Search">
+                    <field name="name" string="Invoice Ref"/>
+                    <field name="customer_id" string="Customer ID"/>
+                    <field name="invoice_id" string="Invoice ID"/>
+                    <field name="invoice_name" string="Invoice Name"/>
+                    <!-- Add additional filters or group by options if needed -->
+                </search>
+            </field>
+        </record>
+
+		<record model="ir.actions.act_window" id="dlsu_sync_logs_action">
+			<field name="name">Sync Logs</field>
+			<field name="res_model">dlsu.sync.logs</field>
+			<field name="view_mode">tree</field>
+		</record>
+
+		
+        <menuitem id="school_menu_log" name="Sync Logs" parent="dlsu_school.school_menu_root" sequence="10" action="dlsu_sync_logs_action"/>
+
+        <!-- <menuitem id="sync_sms_settings_menu" name="Settings" parent="menu_sms_sync_config" sequence="3" action="sync_sms_settings_action"/> -->
+
+
+        <record id="sync_sms_settings_form_inherit" model="ir.ui.view">
+			<field name="name">SMS Syncing Inherit</field>
+			<field name="model">sync.sms.settings</field>
+            <field name="inherit_id" ref="dlsu_sync_sms.sync_sms_settings_form"/>
+			<field name="arch" type="xml">
+
+				<xpath expr="/form/sheet/group/group/field[@name='default']" position="after">
+					<button name="generate_log" type="object" string="Generate Log" class="btn-primary"/>
+				</xpath>
+
+            </field>
+        </record>
+
+        <record id="create_inovoice_from_logs" model="ir.actions.server">
+            <field name="name">Create Invoice</field>
+            <field name="model_id" ref="model_dlsu_sync_logs"/>
+            <field name="binding_model_id" ref="model_dlsu_sync_logs"/>
+            <field name="binding_view_types">list</field>
+            <field name="state">code</field>
+            <field name="code">
+                if records:
+                    action = records.action_sync_log()
+            </field>
+        </record>
+
+
+        <record id="ir_cron_generate_sync_logs" model="ir.cron">
+            <field name="name">Genereate Sync Logs</field>
+            <field name="model_id" ref="dlsu_sync_sms.model_sync_sms_settings"/>
+            <field name="state">code</field>
+            <field name="code">model.sync_logs_cron()</field>
+            <field name="user_id" ref="base.user_root"/>
+            <field name="interval_number">6</field>
+            <field name="interval_type">minutes</field>
+            <field name="numbercall">-1</field>
+            <field name="active" eval="True"/>
+        </record>
+
+        <record id="ir_cron_sync_invoice_logs" model="ir.cron">
+            <field name="name">Create Sync Invoice</field>
+            <field name="model_id" ref="dlsu_sync_sms.model_dlsu_sync_logs"/>
+            <field name="state">code</field>
+            <field name="code">model.sync_invoice_log_cron()</field>
+            <field name="user_id" ref="base.user_root"/>
+            <field name="interval_number">2</field>
+            <field name="interval_type">minutes</field>
+            <field name="numbercall">-1</field>
+            <field name="active" eval="False"/>
+        </record>
+
+
+	</data>
+</odoo>

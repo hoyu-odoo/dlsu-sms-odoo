@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+
+		<!-- SYNC SETTINGS MODEL START -->
+		<menuitem id="menu_sms_sync_config" name="SMS Sync" parent="base.menu_users" sequence="200"/>
+
+
+		<record id="sync_sms_settings_form" model="ir.ui.view">
+			<field name="name">SMS Syncing</field>
+			<field name="model">sync.sms.settings</field>
+			<field name="arch" type="xml">
+				<form string="Configure SMS Synchronization">
+					<sheet>
+						<group>
+							<group string="Connection Settings">
+								<field name="name" required="True"/>
+								<field name="host" required="True"/>
+								<field name="port" required="True" />
+							</group>
+							<group>
+								<field name="user" />
+								<field name="password" />
+								<field name="default" />
+								<button name="sync_test"  string="Test" type="object" class="oe_highlight"/>
+							</group>
+						</group>
+						<group>
+							<group string="Applicant">
+								<separator string="ApplicantViewByDateCreated"/>
+								<field name="applicant_date_from"/>
+								<field name="applicant_date_to"/>
+								<span/><button name="sync_applicant_view_by_date_created"  string="Sync by Date Created" type="object" class="oe_highlight"/>
+								<span/><button name="sync_applicant_view_by_date_modified"  string="Sync by Date Modified" type="object" class="oe_highlight"/>
+
+								<separator string="ApplicantViewByID"/>
+								<field name="applicant_id"/>
+								<span/><button name="sync_applicant_view_by_id"  string="Sync by Applicant ID" type="object" class="oe_highlight"/>
+
+								<separator string="ApplicantViewSearch"/>
+								<field name="applicant_search"/>
+								<span/><button name="sync_applicant_view_search"  string="Sync by Applicant Search" type="object" class="oe_highlight"/>
+							</group>
+
+							<group string="Student">
+								<separator string="StudentViewByDateCreated"/>
+								<field name="student_date_from"/>
+								<field name="student_date_to"/>
+								<span/><button name="sync_student_view_by_date_created"  string="Sync by Date Created" type="object" class="oe_highlight"/>
+								<span/><button name="sync_student_view_by_date_modified"  string="Sync by Date Modified" type="object" class="oe_highlight"/>
+
+								<separator string="StudentViewByID"/>
+								<field name="stud_id"/>
+								<span/><button name="sync_student_view_by_id"  string="Sync by Student ID" type="object" class="oe_highlight"/>
+
+								<separator string="StudentViewSearch"/>
+								<field name="student_search"/>
+								<span/><button name="sync_student_view_search"  string="Sync by Student Search" type="object" class="oe_highlight"/>
+							</group>
+
+
+							<group string="Product">
+								<separator string="ProductViewByDateCreated"/>
+								<field name="product_date_from"/>
+								<field name="product_date_to"/>
+								<span/><button name="sync_product_view_by_date_created"  string="Sync by Date Created" type="object" class="oe_highlight"/>
+								<span/><button name="sync_product_view_by_modified"  string="Sync by Date Modified" type="object" class="oe_highlight"/>
+
+								<separator string="ProductViewByProductID"/>
+								<field name="prod_id"/>
+								<span/><button name="sync_product_view_by_prod_id"  string="Sync by Product ID" type="object" class="oe_highlight"/>
+
+								<separator string="ProductViewByProductTypeID"/>
+								<field name="prod_type_id"/>
+								<span/><button name="sync_product_view_by_prod_type_id"  string="Sync by Product Type ID" type="object" class="oe_highlight"/>
+
+								<separator string="ProductViewSearch"/>
+								<field name="product_search"/>
+								<span/><button name="sync_product_view_by_search"  string="Sync by Product Search" type="object" class="oe_highlight"/>
+
+								<separator string="ProductTypeViewSearch"/>
+								<field name="product_type_search"/>
+								<span/><button name="sync_product_type_view_by_search"  string="Sync by Product Search" type="object" class="oe_highlight"/>
+
+								<!-- <separator string="ProductInsert"/>
+								<field name="data_insert"/>
+								<span/><button name="sync_product_insert"  string="Insert Product" type="object" class="oe_highlight"/> -->
+
+							</group>
+
+							<group string="Invoice">
+								<separator string="invoiceViewByDateCreated"/>
+								<field name="invoice_date_from"/>
+								<field name="invoice_date_to"/>
+								<span/><button name="sync_all_by_invoice_created"  string="Sync Invoice by Customer Date" type="object" class="oe_highlight"/>
+								<!-- <span/><button name="sync_invoice_detail_view_by_date_created"  string="Sync Invoice by Date Created" type="object" class="oe_highlight"/>
+								<span/><button name="sync_invoice_pay_view_by_date_created"  string="Sync Pay by Date Created" type="object" class="oe_highlight"/> -->
+
+
+								<separator string="InvoiceDetailView"/>
+								<field name="customer_id"/>
+								<span/><button name="sync_all_by_customer_id"  string="Sync Invoice by Customer ID" type="object" class="oe_highlight"/>
+								<!-- <span/><button name="sync_invoice_detail_view_by_customer_id"  string="1. Sync by Customer ID" type="object" class="oe_highlight"/>
+								<span/><button name="sync_invoice_pay_view_by_customer_id"  string="2. Sync by Pay Customer ID" type="object" class="oe_highlight"/> -->
+
+								<separator string="InvoiceDetailViewByInvoiceID"/>
+								<field name="invoice_id"/>
+								<span/><button name="sync_all_by_invoice_id"  string="Sync Invoice by Invoice ID" type="object" class="oe_highlight"/>
+								<!-- <span/><button name="sync_invoice_detail_view_by_invoice_id"  string="1. Sync by Invoice ID" type="object" class="oe_highlight"/>
+								<span/><button name="sync_invoice_pay_view_by_invoice_id"  string="2. Sync by Pay Invoice ID" type="object" class="oe_highlight"/> -->
+
+								<!-- <separator string="InvoicePayViewByInvoicePayID"/>
+								<field name="invoice_pay_id"/>
+								<span/><button name="sync_invoice_pay_view_by_invoice_pay_id"  string="2. Sync by Invoice Pay ID" type="object" class="oe_highlight"/> -->
+
+								<!-- <separator string="InvoiceDetailViewByInvoiceRefNo"/>
+								<field name="invoice_ref_no"/>
+								<span/><button name="sync_invoice_detail_view_by_invoice_ref_no"  string="Sync by Invoice ref No" type="object" class="oe_highlight"/>
+								<span/><button name="sync_invoice_pay_view_by_invoice_ref_no"  string="Sync by Invoice Pay Ref No" type="object" class="oe_highlight"/> -->
+
+							</group>
+
+						</group>
+
+						<group>
+							
+							<group string="Create">
+								<div>
+									<separator string="Create Products"/>
+									<span/><button name="sync_create_products"  string="Create Products" type="object" class="oe_highlight"/>
+								</div>
+
+								<group>
+									<div>
+										<separator string="Student"/>
+										<span/><button name="sync_create_student"  string="Create Customer By SMS STUDENT" type="object" class="oe_highlight"/>
+									</div>
+
+									<div>
+										<separator string="Applicant"/>
+										<span/><button name="sync_create_aplicant_sms"  string="Create Customer By SMS APPLICANT" type="object" class="oe_highlight"/>
+									</div>
+								</group>
+
+								<div>
+									<separator string="Create Invoices"/>
+									<group>
+										<div>
+											<span/><button name="sync_all_assessment"  string="Create Assessment" type="object" class="oe_highlight"/>
+										</div>
+
+										<div>
+											<button name="sync_create_customer"  string="1. Assessment Customer" type="object" class="oe_highlight"/>
+											<button name="sync_create_assessment_invoices"  string="2. Assessment Invoice" type="object" class="oe_highlight"/>
+											<button name="create_ajustment"  string="3. Assessment Adjustment Invoice" type="object" class="oe_highlight"/>
+											<button name="sync_create_assetments"  string="4. Assessment SMS View" type="object" class="oe_highlight"/>
+										</div>
+
+										<br/>
+									</group>
+
+									<span/><button name="sync_all_applicant"  string="Create Application" type="object" class="oe_highlight"/>
+									<span/><button name="sync_all_reservation"  string="Create Reservation" type="object" class="oe_highlight"/>
+									<!-- <span/><button name="sync_create_application_invoices"  string="Create Application Invoice" type="object" class="oe_highlight"/>
+									<span/><button name="sync_create_assessment_invoices"  string="Create Assestment Invoice" type="object" class="oe_highlight"/>
+									<span/><button name="sync_create_reservation_invoices"  string="Create Reservation Invoice" type="object" class="oe_highlight"/> -->
+								</div>
+
+								<!-- <div>
+									<separator string="Create School View"/>
+									<span/><button name="sync_create_application"  string="Create Application" type="object" class="oe_highlight"/>
+									<span/><button name="sync_create_assetments"  string="Create Assestment" type="object" class="oe_highlight"/>
+									<span/><button name="sync_create_reservation"  string="Create Reservation" type="object" class="oe_highlight"/>
+								</div> -->
+
+								<!-- <div>
+									<separator string="Create Invoices with School View"/>
+									<span/><button name="sync_create_all"  string="Create All" type="object" class="oe_highlight"/>
+								</div> -->
+
+							</group>
+
+						</group>
+
+						<group>
+							<group string="Update API">
+								<field name="api_user_id" readonly='1' force_save='1'/>
+								<field name="api_paid_invoice_id" domain="[('move_type', '=', 'out_invoice')]"/>
+								<field name="api_invoice_pay_id" readonly='1' force_save='1'/>
+								<field name="api_remarks" readonly='1' force_save='1'/>
+								<field name="api_paid_amount" readonly='1' force_save='1'/>
+								<span/><button name="post_invoice_by_odoo"  string="Update Invoice" type="object" class="oe_highlight"/>
+							</group>
+						</group>
+
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<record id="view_product_account_check_wizard_form_inherit" model="ir.ui.view">
+            <field name="name">product.account.check.wizard.form.inherit</field>
+            <field name="model">product.account.check.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Product Account Check Wizard" >
+
+					<field name="product_names" />
+
+                    <footer>
+                        <button name="action_ok" string="OK" type="object" class="btn-primary"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+		<record id="action_product_account_check_wizard" model="ir.actions.act_window">
+			<field name="name">Products Without Account</field>
+			<field name="res_model">product.account.check.wizard</field>
+			<field name="view_mode">form</field>
+			<field name="target">new</field>
+		</record>
+
+		<record id="sync_sms_settings_tree" model="ir.ui.view">
+			<field name="name">SMS Synchronization</field>
+			<field name="model">sync.sms.settings</field>
+			<field name="arch" type="xml">
+				<tree string="Configure SMS Synchronization">
+					<field name="name"/>
+					<field name="host"/>
+				</tree>
+			</field>
+		</record>
+
+		<record model="ir.actions.act_window" id="sync_sms_settings_action">
+			<field name="name">SMS Synchronization</field>
+			<field name="res_model">sync.sms.settings</field>
+			<field name="view_mode">tree,form</field>
+		</record>
+
+		<!-- menu sms.sync.settings -->
+		<menuitem id="sync_sms_settings_menu" name="Settings" parent="menu_sms_sync_config" sequence="3" action="sync_sms_settings_action"/>
+
+
+	</data>
+</odoo>
+

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    DLSU SMS Integration - Security Groups Configuration
+
+    This file defines the security groups and access control for the SMS integration module.
+    Groups are organized into categories for better management:
+
+    1. School Module - General school management access
+    2. Post Enrollment - Access to post-enrollment processes
+    3. Cancel All - Permission to cancel operations
+-->
+<openerp>
+	<data noupdate="0">
+	
+        <!-- School Module Category -->
+        <record id="custom_school_group" model="ir.module.category">
+            <field name="name">School Module</field>
+            <field name="description">Access control for SMS integration and school management features</field>
+            <field name="sequence">10</field>
+        </record>
+
+		<!-- School User: Basic access to view and sync SMS data -->
+		<record id="custom_school_group_user" model="res.groups">
+			<field name="name">School User</field>
+			<field name="category_id" ref="dlsu_sync_sms.custom_school_group"/>
+		</record>
+
+		<!-- School Admin: Full access to SMS sync configuration and operations -->
+		<record id="custom_school_group_admin" model="res.groups">
+			<field name="name">School Admin</field>
+			<field name="category_id" ref="dlsu_sync_sms.custom_school_group"/>
+		</record>
+
+		<!-- Post Enrollment Category -->
+		<record id="custom_post_enrollment_group" model="ir.module.category">
+            <field name="name">Post Enrollment</field>
+            <field name="description">Access control for post-enrollment operations and invoice processing</field>
+            <field name="sequence">140</field>
+        </record>
+
+		<!-- Post Enrollment User: Access to process enrollment-related invoices -->
+		<record id="custom_post_enrollment_user" model="res.groups">
+			<field name="name">User</field>
+			<field name="category_id" ref="dlsu_sync_sms.custom_post_enrollment_group"/>
+		</record>
+
+		<!-- Cancel All Category -->
+		<record id="custom_cancell_all_group" model="ir.module.category">
+            <field name="name">Cancel All</field>
+            <field name="description">Permission to cancel synchronized records and operations</field>
+            <field name="sequence">142</field>
+        </record>
+
+		<!-- Cancel All User: Permission to cancel sync operations and void records -->
+		<record id="custom_cancel_all_user" model="res.groups">
+			<field name="name">User</field>
+			<field name="category_id" ref="dlsu_sync_sms.custom_cancell_all_group"/>
+		</record>
+
+
+	</data>
+</openerp>

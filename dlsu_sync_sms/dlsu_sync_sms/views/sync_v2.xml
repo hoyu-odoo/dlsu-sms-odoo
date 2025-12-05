@@ -1,0 +1,344 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+		<record id="sync_data_invoice_cron" model="ir.cron">
+			<field name="name">Sync Invoice Cron</field>
+			<field name="model_id" ref="model_sync_sms_settings"/>
+			<field name="state">code</field>
+			<field name="code">model.cron_scheduled_invoice_sync()</field>
+			<field name="active" eval="False"/>
+			<field name="interval_number">5</field>
+			<field name="interval_type">minutes</field>
+			<field name="numbercall">-1</field>
+			<field name="nextcall" eval="(DateTime.now())" />
+			<field name="doall" eval="False"/>
+		</record>
+
+		<!-- SYNC SETTINGS MODEL START -->
+		<menuitem id="menu_sms_sync_config" name="SMS Sync" parent="base.menu_users" sequence="200"/>
+
+
+		<record id="sync_sms_settings_form" model="ir.ui.view">
+			<field name="name">SMS Syncing</field>
+			<field name="model">sync.sms.settings</field>
+			<field name="arch" type="xml">
+				<form string="Configure SMS Synchronization">
+					<sheet>
+						<group>
+							<group string="Connection Settings">
+								<field name="name" required="True"/>
+								<field name="host" required="True"/>
+								<field name="port" required="True" />
+								<field name="default" />
+							</group>
+						</group>
+
+						<notebook>
+							<!-- <page string="SMS Applicant">
+								<div class="oe_button_box" name="button_box">
+									<button name="sync_applicant_view_by_date_created" type="object" class="oe_stat_button" icon="fa-calendar" string="Sync by Date Created"/>
+									<button name="sync_applicant_view_by_id" type="object" class="oe_stat_button" icon="fa-id-card" string="Sync by Applicant ID"/>
+									<button name="sync_applicant_view_search" type="object" class="oe_stat_button" icon="fa-search" string="Sync by Search"/>
+								</div>
+
+								<div>
+									<separator string="ApplicantViewByDateCreated"/>
+									<group>
+										<field name="applicant_date_from"/>
+										<field name="applicant_date_to"/>
+									</group>
+								</div>
+
+								<div>
+									<separator string="ApplicantViewByID"/>
+									<group>
+										<field name="applicant_id"/>
+									</group>
+								</div>
+
+								<div>
+									<separator string="ApplicantViewSearch"/>
+									<group>
+										<field name="applicant_search"/>
+									</group>
+								</div>
+							</page> -->
+
+							<!-- <page string="SMS Student">
+								<div class="oe_button_box" name="button_box">
+									<button name="sync_student_view_by_date_created" type="object" class="oe_stat_button" icon="fa-calendar" string="Sync by Date Created"/>
+									<button name="sync_student_view_by_id" type="object" class="oe_stat_button" icon="fa-id-card" string="Sync by Student ID"/>
+									<button name="sync_student_view_search" type="object" class="oe_stat_button" icon="fa-search" string="Sync by Search"/>
+								</div>
+
+								<div>
+									<separator string="StudentViewByDateCreated"/>
+									<group>
+										<field name="student_date_from"/>
+										<field name="student_date_to"/>
+									</group>
+								</div>
+
+								<div>
+									<separator string="StudentViewByID"/>
+									<group>
+										<field name="stud_id"/>
+									</group>
+								</div>
+
+								<div>
+									<separator string="StudentViewSearch"/>
+									<group>
+										<field name="student_search"/>
+									</group>
+								</div>
+							</page> -->
+
+							<page string="SMS Invoice">
+								<div class="oe_button_box" name="button_box">
+									<button name="sync_all_by_invoice_created" type="object" class="oe_stat_button" icon="fa-calendar" string="Sync by Date Created"/>
+									<button name="sync_all_by_customer_id" type="object" class="oe_stat_button" icon="fa-id-card" string="Sync by Customer ID"/>
+									<button name="sync_all_by_invoice_id" type="object" class="oe_stat_button" icon="fa-money" string="Sync by Invoice ID"/>
+								</div>
+
+								<div>
+									<separator string="InvoiceViewByDateCreated"/>
+									<group>
+										<field name="invoice_date_from"/>
+										<field name="invoice_date_to"/>
+									</group>
+								</div>
+
+								<div>
+									<separator string="InvoiceDetailView"/>
+									<group>
+										<field name="customer_id"/>
+									</group>
+								</div>
+
+								<div>
+									<separator string="InvoiceDetailViewByInvoiceID"/>
+									<group>
+										<field name="invoice_id"/>
+									</group>
+								</div>
+							</page>
+
+
+							<page string="SMS Product">
+								<div class="oe_button_box" name="button_box">
+									<button name="sync_product_view_by_date_created" type="object" class="oe_stat_button" icon="fa-calendar" string="Sync by Date Created"/>
+									<button name="sync_product_view_by_prod_id" type="object" class="oe_stat_button" icon="fa-cube" string="Sync by Product ID"/>
+									<button name="sync_product_view_by_search" type="object" class="oe_stat_button" icon="fa-search" string="Product Search"/>
+									<button name="sync_product_view_by_prod_type_id" type="object" class="oe_stat_button" icon="fa-barcode" string="Product Type ID"/>
+									<button name="sync_product_type_view_by_search" type="object" class="oe_stat_button" icon="fa-search" string="Product Type Search"/>
+									<button name="sync_create_products" type="object" class="oe_stat_button" icon="fa-cube" string="Create Products"/>
+								</div>
+
+								<div>
+									<separator string="ProductViewByDateCreated"/>
+									<group>
+										<field name="product_date_from"/>
+										<field name="product_date_to"/>
+									</group>
+								</div>
+
+								<div>
+									<separator string="ProductViewByProductID"/>
+									<group>
+										<field name="prod_id"/>
+									</group>
+								</div>
+
+								<div>
+									<separator string="ProductViewSearch"/>
+									<group>
+										<field name="product_search"/>
+									</group>
+								</div>
+
+								<div>
+									<separator string="ProductViewByProductTypeID"/>
+									<group>
+										<field name="prod_type_id"/>
+									</group>
+								</div>
+
+								<div>
+									<separator string="ProductTypeViewSearch"/>
+									<group>
+										<field name="product_type_search"/>
+									</group>
+								</div>
+							</page>
+
+						</notebook>
+
+						<notebook>
+							<!-- <page string="Scheduled Sync Invoice">
+								<div class="oe_button_box" name="button_box">
+									<button name="scheduled_invoice_sync" type="object" class="oe_stat_button" icon="fa-cog" string="Generate SMS Invoice"/>
+									<button name="scheduled_invoice_sync_v2" type="object" class="oe_stat_button" icon="fa-cog" string="Sync Invoice"/>
+									<button name="scheduled_invoice_sync_v3" type="object" class="oe_stat_button" icon="fa-cog" string="Sync SMS Invoice"/>
+								</div>
+
+								<div>
+									<group>
+										<field name="sched_invoice_date_from" force_save='1'/>
+										<field name="sched_invoice_date_to" force_save='1'/>
+									</group>
+								</div>
+							</page> -->
+
+							<page string="Invoice Processing">
+								<div class="oe_button_box" name="button_box">
+									<button name="process_assessment_invoices" type="object" class="oe_stat_button" icon="fa-file-text" string="Process Assessment"/>
+									<button name="create_assessment_invoices" type="object" class="oe_stat_button" icon="fa-plus" string="Create Assessment"/>
+									<!-- <button name="repost_assessment_invoices" type="object" class="oe_stat_button" icon="fa-repeat" string="Repost Assessment"/> -->
+									<button name="process_admission_invoices" type="object" class="oe_stat_button" icon="fa-graduation-cap" string="Process Admission"/>
+									<button name="process_other_invoices" type="object" class="oe_stat_button" icon="fa-list" string="Process Other Invoices"/>
+									<button name="adjust_invoice_rounding_errors" type="object" class="oe_stat_button" icon="fa-calculator" string="Fix Rounding Errors"/>
+									<button name="reverse_rounding_adjustment" type="object" class="oe_stat_button" icon="fa-plus-circle" string="Reverse Rounding Fix"/>
+								</div>
+
+								<div>
+									<group>
+										<field name="customer_id_list" force_save='1'/>
+									</group>
+								</div>
+							</page>
+
+							<!-- <page string="Quick Create">
+								<div class="oe_button_box" name="button_box">
+									
+									<button name="sync_create_student" type="object" class="oe_stat_button" icon="fa-id-card" string="SMS STUDENT"/>
+									<button name="sync_create_aplicant_sms" type="object" class="oe_stat_button" icon="fa-id-card" string="SMS APPLICANT"/>
+								</div>
+
+								<div>
+									<group>
+										<field name="sms_create_stud_id" force_save='1'/>
+									</group>
+								</div>
+							</page> -->
+
+							<!-- <page string="Create Assesment Invoices">
+								<div class="oe_button_box" name="button_box">
+									<button name="sync_create_customer_v2" type="object" class="oe_stat_button" icon="fa-file" string="1. Customer"/>
+									<button name="sync_create_assessment_invoices" type="object" class="oe_stat_button" icon="fa-file" string="2. Invoice"/>
+									<button name="create_ajustment_partner_v2" type="object" class="oe_stat_button" icon="fa-file" string="3. Adjustment Invoice"/>
+									<button name="sync_create_assetments" type="object" class="oe_stat_button" icon="fa-file" string="4. SMS View"/>
+								</div>
+							</page>
+
+							<page string="Create Application Invoices">
+								<div class="oe_button_box" name="button_box">
+									<button name="sync_all_applicant" type="object" class="oe_stat_button" icon="fa-cog" string="Create Application"/>
+								</div>
+							</page>
+
+							<page string="Create Reservation">
+								<div class="oe_button_box" name="button_box">
+									<button name="sync_all_reservation" type="object" class="oe_stat_button" icon="fa-cog" string="Create Reservation"/>
+								</div>
+							</page> -->
+
+							<page string="Update API">
+								<div class="oe_button_box" name="button_box">
+									<button name="post_invoice_by_odoo" type="object" class="oe_stat_button" icon="fa-cog" string="Update Invoice"/>
+								</div>
+
+								<div>
+									<group>
+										<field name="api_user_id" readonly='1' force_save='1'/>
+										<field name="api_paid_invoice_id" domain="[('move_type', '=', 'out_invoice')]"/>
+										<field name="api_invoice_pay_id" readonly='1' force_save='1'/>
+										<field name="api_remarks" readonly='1' force_save='1'/>
+										<field name="api_paid_amount" readonly='1' force_save='1'/>
+									</group>
+								</div>
+							</page>
+						</notebook>
+
+						<notebook invisible="1">
+							<page string="Update Fixed Asset">
+								<div class="oe_button_box" name="button_box">
+									<button name="reset_closed_assets_to_draft" type="object" class="oe_stat_button" icon="fa-undo" string="Reset Closed Assets to Draft"/>
+									<button name="dispose_draft_assets" type="object" class="oe_stat_button" icon="fa-trash" string="Dispose Draft Assets"/>
+									<button name="reverse_open_assets_to_draft" type="object" class="oe_stat_button" icon="fa-history" string="Reverse Open Assets to Draft"/>
+									<button name="validate_draft_assets" type="object" class="oe_stat_button" icon="fa-check" string="Validate Draft Assets"/>
+								</div>
+
+								<div>
+									<group>
+										<field name="asset_id_list" force_save='1'/>
+									</group>
+								</div>
+							</page>
+						</notebook>
+
+						<notebook invisible="0">
+							<page string="Update Analytic by COA Level">
+								<div class="oe_button_box" name="button_box">
+									<button name="update_analytic_data_bulk" type="object" class="oe_stat_button" icon="fa-refresh" string="Update Analytic Data"/>
+								</div>
+
+								<div>
+									<group>
+										<field name="account_id_list" force_save='1'/>
+									</group>
+								</div>
+							</page>
+						</notebook>
+
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+		<record id="view_product_account_check_wizard_form_inherit" model="ir.ui.view">
+            <field name="name">product.account.check.wizard.form.inherit</field>
+            <field name="model">product.account.check.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Product Account Check Wizard" >
+
+					<field name="product_names" />
+
+                    <footer>
+                        <button name="action_ok" string="OK" type="object" class="btn-primary"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+		<record id="action_product_account_check_wizard" model="ir.actions.act_window">
+			<field name="name">Products Without Account</field>
+			<field name="res_model">product.account.check.wizard</field>
+			<field name="view_mode">form</field>
+			<field name="target">new</field>
+		</record>
+
+		<record id="sync_sms_settings_tree" model="ir.ui.view">
+			<field name="name">SMS Synchronization</field>
+			<field name="model">sync.sms.settings</field>
+			<field name="arch" type="xml">
+				<tree string="Configure SMS Synchronization">
+					<field name="name"/>
+					<field name="host"/>
+				</tree>
+			</field>
+		</record>
+
+		<record model="ir.actions.act_window" id="sync_sms_settings_action">
+			<field name="name">SMS Synchronization</field>
+			<field name="res_model">sync.sms.settings</field>
+			<field name="view_mode">tree,form</field>
+		</record>
+
+		<!-- menu sms.sync.settings -->
+		<menuitem id="sync_sms_settings_menu" name="Settings" parent="menu_sms_sync_config" sequence="3" action="sync_sms_settings_action"/>
+
+
+	</data>
+</odoo>
+

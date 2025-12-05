@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- RES PARTNER WIZRAD -->
+    <record id="view_product_success_wizard_form" model="ir.ui.view">
+        <field name="name">product.success.wizard.form</field>
+        <field name="model">product.success.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Sync Successful">
+                <group>
+                    <span><h3><bold>Sync successful. Thank you!!! (づ ◕‿◕ )づ</bold></h3></span>
+                </group>
+                <footer>
+                    <button string="OK" type="object" name="action_ok" class="btn-primary" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_sync_success_wizard" model="ir.actions.act_window">
+        <field name="name">Sync Success</field>
+        <field name="res_model">product.success.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <!-- RES PARTNER UPDATE PRODUCTS -->
+    <record id="update_sms_product" model="ir.actions.server">
+        <field name="name">Update Product SMS</field>
+        <field name="model_id" ref="product.model_product_template"/>
+        <field name="binding_model_id" ref="product.model_product_template"/>
+        <field name="binding_view_types">form,list</field>
+        <field name="state">code</field>
+        <field name="code">
+            if records:
+                action = records.update_products()</field>
+    </record>
+
+    <!-- RES PARTNER CREATE PRODUCTS -->
+    <record id="create_sms_product" model="ir.actions.server">
+        <field name="name">Create Product SMS</field>
+        <field name="model_id" ref="product.model_product_template"/>
+        <field name="binding_model_id" ref="product.model_product_template"/>
+        <field name="binding_view_types">form,list</field>
+        <field name="state">code</field>
+        <field name="code">
+            if records:
+                action = records.create_products()</field>
+    </record>
+
+    <record model="ir.ui.view" id="dlsud_create_update_products"> 
+        <field name="name">sms.product.update.create</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_only_form_view"/>
+        <field name="arch" type="xml">
+
+            <div name="button_box" position="inside">
+                <button name="update_products" string="Sync Update Products" type="object" class="oe_stat_button" icon="fa-pencil-square-o"/>	
+                <button name="create_products" string="Sync Created Products"  type="object" class="oe_stat_button" icon="fa-pencil"/>
+            </div>
+
+            <!-- <xpath expr="//button[@name='open_pricelist_rules']" position="inside">
+                <button name="update_products" type="object" string="Approve" class="btn-primary"/>			
+            </xpath> -->
+        </field>
+    </record>
+
+    <!-- Create search for sms.product -->
+    <record id="sms_product_search" model="ir.ui.view">
+        <field name="name">SMS Product Search</field>
+        <field name="model">sms.product</field>
+        <field name="arch" type="xml">
+            <search string="SMS Product Search">
+                <field name="prod_id"/>
+                <field name="prod_name"/>
+                <field name="prod_desc"/>
+                <field name="prod_type_id"/>
+                <field name="prod_type_desc"/>
+                <field name="account_code"/>
+                <field name="date_created"/>
+                <field name="date_modified"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- Create Tree View for sms.product -->
+    
+    <record id="sms_product_tree" model="ir.ui.view">
+        <field name="name">SMS Product Tree</field>
+        <field name="model">sms.product</field>
+        <field name="arch" type="xml">
+            <tree string="SMS Product Tree" editable="bottom">
+                <field name="prod_id"/>
+                <field name="prod_name"/>
+                <field name="prod_desc"/>
+                <field name="prod_type_id"/>
+                <field name="prod_type_desc"/>
+                <field name="account_code"/>
+                <field name="date_created"/>
+                <field name="date_modified"/>
+                <button name="update_sms_product"  string="Update SMS" type="object" class="oe_highlight"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Create Form View for sms.product -->
+    <record id="sms_product_form" model="ir.ui.view">
+        <field name="name">SMS Product Form</field>
+        <field name="model">sms.product</field>
+        <field name="arch" type="xml">
+            <form string="SMS Product Form">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="prod_name"/>
+                            <field name="prod_desc"/>
+                            <field name="prod_type_desc"/>
+                            <field name="account_code"/>
+                        </group>
+                        <group>
+                            <field name="prod_id"/>
+                            <field name="prod_type_id"/>
+                            <field name="date_created"/>
+                            <field name="date_modified"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+
+    </record>
+
+    <!-- Create Action for sms.product -->
+    <record id="sms_product_action" model="ir.actions.act_window">
+        <field name="name">SMS Product Action</field>
+        <field name="res_model">sms.product</field>
+        <field name="view_mode">tree</field>
+    </record>
+
+    <!-- Create Menu Item for sms.product -->
+    <menuitem id="sms_product_menu" name="Product" parent="school_menu_sms" action="sms_product_action" sequence="2"/>
+
+
+</odoo>

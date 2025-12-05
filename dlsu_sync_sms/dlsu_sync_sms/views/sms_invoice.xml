@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record model="ir.actions.server" id="action_cancel_invoice">
+        <field name="name">Cancel All Invoice</field>
+        <field name="model_id" ref="account.model_account_move"/>
+        <field name="binding_model_id" ref="account.model_account_move"/>
+        <field name="binding_view_types">list,form</field>
+        <field name="state">code</field>
+         <field name="groups_id" eval="[(6, 0, [ref('dlsu_sync_sms.custom_cancel_all_user')])]"/>
+        <field name="code">
+            if records:
+                action = records.cancel_all()
+        </field>
+    </record>
+
+    <record model="ir.actions.server" id="action_sync_false">
+        <field name="name">Sync False</field>
+        <field name="model_id" ref="dlsu_sync_sms.model_sms_invoice"/>
+        <field name="binding_model_id" ref="dlsu_sync_sms.model_sms_invoice"/>
+        <field name="binding_view_types">list,form</field>
+        <field name="state">code</field>
+        <field name="code">
+            if records:
+                action = records.action_sync_false()
+        </field>
+    </record>
+
+    <record model="ir.actions.server" id="action_adjusment_false">
+        <field name="name">Adjustment False</field>
+        <field name="model_id" ref="dlsu_sync_sms.model_sms_invoice"/>
+        <field name="binding_model_id" ref="dlsu_sync_sms.model_sms_invoice"/>
+        <field name="binding_view_types">list,form</field>
+        <field name="state">code</field>
+        <field name="code">
+            if records:
+                action = records.action_adjusment_false()
+        </field>
+    </record>
+
+    <record model="ir.actions.server" id="action_trans1">
+        <field name="name">Convert to Trans 1</field>
+        <field name="model_id" ref="dlsu_sync_sms.model_sms_invoice"/>
+        <field name="binding_model_id" ref="dlsu_sync_sms.model_sms_invoice"/>
+        <field name="binding_view_types">list,form</field>
+        <field name="state">code</field>
+        <field name="code">
+            if records:
+                action = records.action_trans1()
+        </field>
+    </record>
+
+    <!-- Create search for sms.invoice -->
+    <record id="sms_invoice_search" model="ir.ui.view">
+        <field name="name">SMS Invoice Search</field>
+        <field name="model">sms.invoice</field>
+        <field name="arch" type="xml">
+            <search string="SMS Invoice Search">
+                <field name="customer_id"/>
+                <field name="invoice_id"/>
+                <field name="invoice_ref_no"/>
+                <field name="customer_name"/>
+                <field name="pay_term"/>
+                <field name="void_remarks"/>
+                <field name="prod_code"/>
+                <field name="prod_desc"/>
+                <field name="account_code"/>
+                <field name="invoice_pay_no"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- Create Tree View for sms.invoice -->
+    <record id="sms_invoice_tree" model="ir.ui.view">
+        <field name="name">SMS Invoice Tree</field>
+        <field name="model">sms.invoice</field>
+        <field name="arch" type="xml">
+            <tree string="SMS Applicant Tree">
+                <field name="invoice_id"/>
+                <field name="invoice_date"/>
+                <field name="invoice_ref_no"/>
+                <field name="inv_type"/>
+                <field name="inv_type_desc"/>
+                <field name="customer_type"/>
+                <field name="customer_id"/>
+                <field name="customer_ref_id"/>
+                <field name="customer_name"/>
+                <field name="pay_term"/>
+                <field name="total_amount"/>
+                <field name="adjusted"/>
+                <field name="void"/>
+                <field name="l_name"/>
+                <field name="f_name"/>
+                <field name="m_name"/>
+                <field name="suffix"/>
+                <field name="amount_due"/>
+                <field name="due_date"/>
+                <field name="post_date"/>
+                <field name="invoice_pay_id"/>
+                <field name="invoice_pay_no"/>
+                <field name="void_date"/>
+                <field name="void_remarks"/>
+                <field name="invoice_adj_id"/>
+                <field name="invoice_adj_no"/>
+                <field name="adjust_date"/>
+                <field name="total_adj_amount"/>
+                <field name="adj_remarks"/>
+                <field name="invoice_det_id"/>
+                <field name="inv_det_adj_id"/>
+                <field name="prod_id"/>
+                <field name="prod_code"/>
+                <field name="prod_desc"/>
+                <field name="account_code"/>
+                <field name="unit_price"/>
+                <field name="qty"/>
+                <field name="amount"/>
+                <field name="remarks"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Create Form View for sms.invoice -->
+    <record id="sms_invoice_form" model="ir.ui.view">
+        <field name="name">SMS Invoice Form</field>
+        <field name="model">sms.invoice</field>
+        <field name="arch" type="xml">
+            <form string="SMS Invoice Form">
+                <sheet>
+                    <group>
+
+                         <group>
+                            <field name="invoice_id"/>
+                            <field name="invoice_pay_id"/>
+                            <field name="invoice_adj_id"/>
+                            <field name="invoice_det_id"/>
+                            <field name="inv_det_adj_id"/>
+                            <br/>
+                        </group>
+
+                        <group>
+                            <field name="customer_id"/>
+                            <field name="customer_ref_id"/>
+                            <field name="prod_id"/>
+                        </group>
+                            
+                        <group>
+                            <field name="customer_type"/>
+                            <field name="customer_name"/>
+                            <field name="l_name"/>
+                            <field name="f_name"/>
+                            <field name="m_name"/>
+                            <field name="suffix"/>
+                            <br/>
+                        </group>
+
+                        <group>
+                            <field name="sms_email"/>
+                            <field name="course"/>
+                            <field name="year_level"/>
+                            <field name="school_year"/>
+                            <field name="term"/>
+                            <br/>
+                        </group>
+
+                        <group>
+                            <field name="invoice_date"/>
+                            <field name="invoice_pay_no"/>
+                            <field name="invoice_ref_no"/>
+                            <field name="inv_type"/>
+                            <field name="inv_type_desc"/>
+                            <field name="pay_term"/>
+                            <br/>
+                        </group>
+
+                        <group>
+                            <field name="account_code"/>
+                            <field name="prod_code"/>
+                            <field name="prod_desc"/>
+                        </group>
+
+                        <group>
+                            <field name="due_percent"/>
+                            <field name="remarks"/>
+                            <field name="due_date"/>
+                            <br/>
+
+                            <field name="due_percent2"/>
+                            <field name="remarks2"/>
+                            <field name="due_date2"/>
+                            <br/>
+
+                            <field name="due_percent3"/>
+                            <field name="remarks3"/>
+                            <field name="due_date3"/>
+                            <br/>
+
+                            <field name="due_percent4"/>
+                            <field name="remarks4"/>
+                            <field name="due_date4"/>
+                            <br/>
+                        </group>
+                        
+                        <group>
+                            <field name="amount_due"/>
+                            <field name="qty"/>
+                            <field name="unit_price"/>
+                            <field name="amount"/>
+                            <field name="total_amount"/>
+                            <br/>
+                        </group>
+                        
+                        <group>
+                            <field name="adjusted"/>
+                            <field name="void"/>
+                            <field name="void_date"/>
+                            <field name="void_remarks"/>
+                            <br/>
+                        </group>
+                        
+                        <group>
+                            <field name="invoice_adj_no"/>
+                            <field name="adjust_date"/>
+                            <field name="total_adj_amount"/>
+                            <field name="adj_remarks"/>
+                        </group>
+
+                        <group>
+                            <field name="post_date"/>
+                            <field name="is_adjustment_created" />
+                            <field name="is_sync" />
+                        </group>
+                        
+                        
+                    
+                        
+                        
+                            
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Create Action for sms.student -->
+    <record model="ir.actions.act_window" id="sms_invoice_action">
+        <field name="name">SMS Invoice</field>
+        <field name="res_model">sms.invoice</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- Create Menu for sms.student -->
+    <menuitem id="sms_invoice_menu" name="Invoice" parent="school_menu_sms" sequence="4" action="sms_invoice_action"/>
+
+    
+    <record id="view_dlsud_account_payment_search_inherit" model="ir.ui.view">
+        <field name="name">account.payment.search.inherit</field>
+        <field name="model">account.payment</field>
+        <field name="inherit_id" ref="account.view_account_payment_search"/>
+        <field name="arch" type="xml">
+             <xpath expr="//search" position="inside">
+                <field name="customer_id" string="Customer ID"/>
+                <!-- <field name="student_id" string="SMS Student ID"/>
+                <field name="applicant_id" string="SMS Applicant ID"/> -->
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

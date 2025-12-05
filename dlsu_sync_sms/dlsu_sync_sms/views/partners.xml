@@ -1,0 +1,125 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <record model="ir.actions.server" id="action_post_ending_bal_account">
+        <field name="name">Post Enrollment</field>
+        <field name="model_id" ref="base.model_res_partner"/>
+        <field name="binding_model_id" ref="base.model_res_partner"/>
+        <field name="binding_view_types">form</field>
+        <field name="state">code</field>
+        <field name="groups_id" eval="[(6, 0, [ref('dlsu_sync_sms.custom_post_enrollment_user')])]"/>
+        <field name="code">
+            if records:
+                action = records.post_ending_balance_by_odoo()
+        </field>
+    </record>
+
+    <record model="ir.actions.server" id="action_post_ending_bal_list_account">
+        <field name="name">Post Enrollment(List)</field>
+        <field name="model_id" ref="base.model_res_partner"/>
+        <field name="binding_model_id" ref="base.model_res_partner"/>
+        <field name="binding_view_types">list</field>
+        <field name="state">code</field>
+        <field name="groups_id" eval="[(6, 0, [ref('dlsu_sync_sms.custom_post_enrollment_user')])]"/>
+        <field name="code">
+            if records:
+                action = records.post_ending_balance_list_by_odoo()
+        </field>
+    </record>
+
+    <record model="ir.sequence" id="seq_invoice">
+		<field name="name">Invoice</field>
+		<field name="code">invoice_sequence</field>
+		<field name="implementation">no_gap</field>
+		<field name="prefix">INV/%(range_year)s/</field>
+		<field name="padding">5</field>
+	</record>
+
+    <record id="res_partner_form_inherit_customer_id" model="ir.ui.view">
+        <field name="name">res.partner.form.inherit.customer_id</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+
+            <field name="vat" position="after">
+                <field name="is_customer_portal" attrs="{'readonly': [('is_customer_portal', '=', True)]}" force_save="1"/>
+                <field name="customer_id"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="custom_product_template_prod_id" model="ir.ui.view">
+        <field name="name">custom.product.template.prodid</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_only_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='barcode']" position="after">
+                <field name="prod_id" force_save="True"/>
+                <field name="prod_type_id" force_save="True"/>
+            </xpath>                
+        </field>
+    </record>
+
+    <record id="inherited_account_move_reference" model="ir.ui.view">
+        <field name="name">account.move.reference</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//form//group/field[@name='payment_reference']" position="after">
+                <field name="invoice_ref_no" force_save="True" attrs="{'invisible': [('move_type','in',('in_invoice','entry'))]}"/>
+                <field name="inv_type_desc" force_save="True" attrs="{'invisible': [('move_type','in',('in_invoice','entry'))]}"/>
+
+                <!-- <field name="course" required="0" store="True" attrs="{'invisible': [('move_type','in',('in_invoice','entry'))]}"/> -->
+                <field name="course" attrs="{'required': [('move_type','not in',('in_invoice','entry','in_refund'))], 'invisible': [('move_type','in',('in_invoice','entry','in_refund'))]}"/>
+
+                <field name="year" force_save="True" attrs="{'invisible': [('move_type','in',('in_invoice','entry', 'in_refund'))]}"/>
+                <field name="school_year" force_save="True" attrs="{'invisible': [('move_type','in',('in_invoice','entry','in_refund'))]}"/>
+                <field name="term" force_save="True" attrs="{'invisible': [('move_type','in',('in_invoice','entry','in_refund'))]}"/>
+
+                <field name="invoice_category" force_save="True" attrs="{'required': [('move_type','not in',('in_invoice','entry','in_refund', 'out_refund'))], 'invisible': [('move_type','in',('in_invoice','entry','in_refund', 'out_refund'))]}"/>
+                <field name="is_student" force_save="True" invisible="1"/>
+
+            </xpath>      
+
+        </field>
+    </record> 
+
+
+    <record id="view_account_movez_search" model="ir.ui.view">
+        <field name="name">view.account.move.search</field>            
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_account_invoice_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="invoice_ref_no"/>
+            </xpath>
+        </field>
+    </record>
+
+
+    <!-- SYNC PARTNER AND HR SCHEDULER START -->
+    <record id="sync_customer_for_portal_cron" model="ir.cron">
+        <field name="name">Sync Customer for Portal Cron</field>
+        <field name="model_id" ref="model_sync_sms_settings"/>
+        <field name="state">code</field>
+        <field name="code">model.sync_customer_for_portal_cron()</field>
+        <field name="active" eval="True"/>
+        <field name="interval_number">15</field>
+        <field name="interval_type">minutes</field>
+        <field name="numbercall">-1</field>
+        <field name="nextcall" eval="(DateTime.now())" />
+        <field name="doall" eval="False"/>
+    </record>
+
+     
+    <record id="sync_selected_res_partners_to_portal_action" model="ir.actions.server">
+        <field name="name">Sync Customers to Portal</field>
+        <field name="model_id" ref="model_res_partner"/>
+        <field name="binding_model_id" ref="model_res_partner"/>
+        <field name="binding_view_types">form,list</field>
+        <field name="state">code</field>
+        <field name="code">records.sync_partners_to_portal_manual()</field>
+    </record>
+
+    
+</odoo>
